@@ -1,6 +1,6 @@
 ;(function () {
-    var head = document.getElementsByTagName('head')[0]
-    var contentWidth = 640
+    var head = document.head
+    var contentWidth = null
     var viewport = null
     Array.prototype.slice.call(head.children).forEach(function(item) {
         if(item.name === 'viewport') 
@@ -8,6 +8,9 @@
         if (item.getAttribute('data-name') === 'scale')
             contentWidth = parseFloat(item.getAttribute('data-content-width'))
     })
+
+    if (!viewport)
+        console.warn('请通过<meta data-name="scale" data-content-width="xx">设置你的基准px值')
 
     checkScale()
 
@@ -34,6 +37,6 @@
     }
 
     function checkScale() {
-        head.appendChild(createViewport(screen.availWidth / contentWidth))
+        head.appendChild(createViewport(screen.availWidth / (contentWidth || 640)))
     }
 }());
